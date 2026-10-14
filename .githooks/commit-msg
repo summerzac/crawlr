@@ -1,0 +1,22 @@
+#!/bin/sh
+# Crawlr commit-msg hook: enforces the subject line only (D-22).
+#   type(scope)?: subject   (max 72 characters)
+#   type in: feat fix docs chore test ci refactor build
+# Body and trailers are free text. Merge and revert subjects are exempt.
+subject=$(head -n1 "$1")
+
+case "$subject" in
+  "Merge "*|"Revert "*) exit 0 ;;
+esac
+
+if [ "${#subject}" -gt 72 ]; then
+  echo "commit-msg: subject is ${#subject} characters; maximum is 72." >&2
+  exit 1
+fi
+
+if ! printf '%s\n' "$subject" | grep -Eq '^(feat|fix|docs|chore|test|ci|refactor|build)(\([a-z0-9./-]+\))?: [^ ].*$'; then
+  echo "commit-msg: subject must be 'type(scope)?: subject' with type one of" >&2
+  echo "  feat fix docs chore test ci refactor build" >&2
+  echo "  got: $subject" >&2
+  exit 1
+fi

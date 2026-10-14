@@ -1,0 +1,22 @@
+#!/bin/sh
+# Crawlr pre-commit hook: lint, typecheck, secret scan.
+# Installed by `npm install` (package.json "prepare" sets core.hooksPath).
+# Never skipped (docs/WORKING-RULES.md). Fails closed if gitleaks is missing.
+set -e
+cd "$(git rev-parse --show-toplevel)"
+
+echo "pre-commit: lint"
+npm run --silent lint
+
+echo "pre-commit: typecheck"
+npm run --silent typecheck
+
+echo "pre-commit: secret scan"
+if ! command -v gitleaks >/dev/null 2>&1; then
+  echo "pre-commit: gitleaks is not on PATH. Commit refused (fail closed)." >&2
+  echo "Install per-user (no admin needed): download the release zip from" >&2
+  echo "https://github.com/gitleaks/gitleaks/releases (CI pins v8.30.1), unzip to a" >&2
+  echo "folder in your user profile and add that folder to your user PATH." >&2
+  exit 1
+fi
+gitleaks git --pre-commit --staged --redact --no-banner
