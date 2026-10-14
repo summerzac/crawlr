@@ -145,11 +145,33 @@ for now. No `overrides` are added, and no audit job is added to CI.
 the app bundle is a blocker** and stops the gate until it is fixed or the owner rules on it.
 Findings in build-time tooling are recorded here and re-checked at each gate.
 
-**Counts on 2026-10-14** (lockfile as of `f5274b8`): production tree 35 findings, 23 high and
-12 moderate, 0 critical; whole tree including dev tooling 58 findings, 46 high and 12 moderate,
-0 critical. Every one is transitive; the direct packages npm flags (`expo`, `react-native`,
-`jest`, `jest-expo`, `@types/jest`) are flagged for what they depend on, and the only fix npm
-offers for most is a major downgrade (`expo` 44, `react-native` 0.72), which is not a fix.
+**How to count, so gates compare like with like.** `npm audit` reports *packages reached*: every
+package whose dependency chain leads to an advisory is one "vulnerability" at that advisory's
+severity, so one advisory on a deep package (such as `braces`, under `micromatch`, under Metro
+and Jest) counts dozens of times. Each gate therefore reports **both** numbers, from
+`npm audit --json`:
+
+1. **distinct advisories** (unique `source` IDs in the `via` entries), by severity: the number
+   that tells you what is actually wrong;
+2. **packages reached**, as npm prints them, for the production tree (`--omit=dev`) and the
+   whole tree.
+
+**Counts on 2026-10-14** (lockfile unchanged since `83c4c10`): **4 distinct advisories, 2 high
+and 2 moderate, 0 critical**. Packages reached: production tree 35 (23 high, 12 moderate),
+whole tree 58 (46 high, 12 moderate). The Prompt 0 gate report's "15 high / 7 moderate" was a
+packages-reached count taken before `braces` advisory GHSA-vfj7-8cjw-p6xm (which affects the
+current latest release, 3.0.3, so it post-dates the lockfile) entered the advisory database;
+that one advisory reaches the whole `micromatch` chain (Metro, Jest, the Expo CLI), which is
+where the extra packages come from. No dependency changed. The direct packages npm flags
+(`expo`, `react-native`, `jest`, `jest-expo`, `@types/jest`) are flagged for what they depend on,
+and the only fix npm offers for most is a major downgrade (`expo` 44, `react-native` 0.72),
+which is not a fix.
+
+**Bundle check, 2026-10-14.** `npx expo export --platform ios --source-maps --no-bytecode` and
+the source map's `sources` list: the app bundle holds Crawlr's own code plus `react-native`,
+`expo`, `expo-modules-core`, `react`, `expo-status-bar` and React Native's small runtime
+helpers. **None of the packages in the table below is in the bundle.** Re-run this check at
+every gate; it is the test for the blocker rule.
 
 | Advisory | Packages reached | Severity | Why it is build-time only |
 |---|---|---|---|
