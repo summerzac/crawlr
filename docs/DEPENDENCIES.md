@@ -26,6 +26,8 @@ Licence policy and allowlist: [SECURITY.md](SECURITY.md#5-dependencies).
 | jest-expo | 57.0.6 | Jest preset that transforms Expo/React Native modules for tests | MIT | Plain jest cannot load React Native or Expo modules; this is Expo's own preset, version-matched to SDK 57 | 2026-10-14 | feat: add placeholder screen with unit test |
 | @types/jest | 29.5.14 | TypeScript types for jest globals (`describe`, `it`, `expect`) | MIT | Strict typecheck fails on test files without them | 2026-10-14 | feat: add placeholder screen with unit test |
 | @testing-library/react-native | 14.1.0 | Renders React Native components in tests and queries by text | MIT | `react-test-renderer` is deprecated for React 19; this is the maintained way to render RN components in jest | 2026-10-14 | feat: add placeholder screen with unit test |
+| eslint | 9.39.5 | Linter (`npm run lint`, via `expo lint`) | MIT | No linter present; `expo lint` requires ESLint | 2026-10-14 | build: add ESLint via expo lint |
+| eslint-config-expo | 57.0.2 | Expo's ESLint rule set for React Native + TypeScript | MIT | Avoids hand-maintaining parser and plugin config; version-matched to SDK 57 | 2026-10-14 | build: add ESLint via expo lint |
 
 ## Licence check exceptions
 
