@@ -22,7 +22,8 @@
     "start": "expo start",
     "typecheck": "tsc --noEmit",
     "test": "jest",
-    "lint": "expo lint --max-warnings 0"
+    "lint": "expo lint --max-warnings 0",
+    "prepare": "git config core.hooksPath .githooks"
   },
   "private": true,
   "license": "UNLICENSED",
