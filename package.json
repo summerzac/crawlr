@@ -23,7 +23,8 @@
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "lint": "expo lint --max-warnings 0",
-    "prepare": "git config core.hooksPath .githooks"
+    "prepare": "git config core.hooksPath .githooks",
+    "licences": "node scripts/check-licenses.mjs"
   },
   "private": true,
   "license": "UNLICENSED",

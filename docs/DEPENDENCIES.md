@@ -31,7 +31,22 @@ Licence policy and allowlist: [SECURITY.md](SECURITY.md#5-dependencies).
 
 ## Licence check exceptions
 
-None.
+Granted exceptions: none. The `EXCEPTIONS` map in `scripts/check-licenses.mjs` is empty.
+
+**Pending the owner's ruling (raised at the Prompt 0 gate).** `npm run licences` fails on these
+transitive packages in the production tree. All arrive through `expo` (build tooling: Expo CLI,
+Metro, browserslist, js-yaml); none is Crawlr's own code and none ships in the app bundle.
+
+| Package | Version | Licence | Reached via | Note |
+|---|---|---|---|---|
+| lightningcss (+ 12 platform binaries `lightningcss-*`) | 1.33.0 | MPL-2.0 | expo → @expo/cli / Metro CSS tooling | MPL-2.0 is a weak copyleft on the library's own files only; unmodified use does not affect Crawlr's licence |
+| caniuse-lite | 1.0.30001816 | CC-BY-4.0 | expo → browserslist | Data file (browser support table); CC-BY requires attribution of the data, not of Crawlr |
+| argparse | 2.0.1 | Python-2.0 | expo → js-yaml | Permissive licence under a non-allowlisted name |
+
+Options for the owner: (a) add `MPL-2.0`, `CC-BY-4.0` and `Python-2.0` to the allowlist in
+SECURITY.md and the script; (b) grant per-package exceptions in `EXCEPTIONS`; (c) leave CI red
+on the licence check until Expo's tree changes. Builder's recommendation: (b), per package, so
+the allowlist stays narrow.
 
 ## Known audit findings (transitive, not direct)
 
