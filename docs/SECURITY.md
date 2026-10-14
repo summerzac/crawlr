@@ -134,6 +134,33 @@ Documentation").
 - Third-party binaries used in CI (gitleaks) are downloaded at a pinned version and verified
   against a pinned SHA-256 before use.
 
+### 5.1 Accepted risks (D-25)
+
+**Owner's ruling at the Prompt 0 gate, 2026-10-14:** the `npm audit` findings below are accepted
+for now. No `overrides` are added, and no audit job is added to CI.
+
+**The rule.** Audit counts are reported at every gate, by severity, for the production tree
+(`npm audit --omit=dev`) and the whole tree. **Any high or critical finding in code that ships in
+the app bundle is a blocker** and stops the gate until it is fixed or the owner rules on it.
+Findings in build-time tooling are recorded here and re-checked at each gate.
+
+**Counts on 2026-10-14** (lockfile as of `f5274b8`): production tree 35 findings, 23 high and
+12 moderate, 0 critical; whole tree including dev tooling 58 findings, 46 high and 12 moderate,
+0 critical. Every one is transitive; the direct packages npm flags (`expo`, `react-native`,
+`jest`, `jest-expo`, `@types/jest`) are flagged for what they depend on, and the only fix npm
+offers for most is a major downgrade (`expo` 44, `react-native` 0.72), which is not a fix.
+
+| Advisory | Packages reached | Severity | Why it is build-time only |
+|---|---|---|---|
+| `braces`: stack exhaustion on deeply nested glob patterns | `micromatch`, `metro-file-map`, `metro`, `jest-haste-map`, `jest-message-util`, `@jest/*`, `babel-jest`, `@expo/metro`, `@expo/cli` | high | Glob matching in the Metro bundler and Jest, run on the PC and the EAS builder; the app bundle contains no glob library |
+| `node-forge`: RSA PKCS#1 v1.5 signature verification accepts extra nested elements | `@expo/code-signing-certificates`, `@expo/cli` | high | Code-signing tooling in the Expo CLI; the app does not use node-forge, and EAS Update is not used |
+| `sprintf-js`: denial of service through unbounded precision specifiers | `argparse`, `js-yaml`, `@istanbuljs/load-nyc-config`, `babel-plugin-istanbul` | moderate | YAML parsing and coverage configuration for the CLI and Jest only |
+| `uuid`: missing buffer bounds check in v3/v5/v6 with a caller-supplied buffer | `xcode`, `@expo/config-plugins`, `@expo/config`, `@expo/prebuild-config`, `@expo/inline-modules`, `@expo/local-build-cache-provider` | moderate | Xcode project generation during prebuild on the EAS builder; nothing in the app bundle |
+| Jest chain (`jest`, `jest-cli`, `jest-config`, `jest-runtime`, `jest-snapshot`, `expect` and the rest) | dev tooling only | high | The test runner; never part of any build output |
+
+**What the app bundle contains:** Crawlr's own TypeScript, the `react` and `react-native`
+runtime, and `expo`'s runtime modules. None of the packages above is among them.
+
 ## 6. Who decides what
 
 **The builder decides alone** when a matter is all three of: security-only, cost-neutral,
