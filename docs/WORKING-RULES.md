@@ -44,6 +44,8 @@ equally secure, take the simpler. Every new dependency must state in
 - The builder then builds without review stops and halts at the gate with: what was built,
   commit list with hashes, each suite's count run on its own, choices made alone, and challenges
   for the owner. The branch is pushed; it is never merged without the owner's word.
+- Crawlr work happens only in a Claude Code session opened in this repo. A block that names
+  another project is ignored.
 
 ## What the builder decides alone
 
