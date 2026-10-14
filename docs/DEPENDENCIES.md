@@ -61,4 +61,5 @@ non-allowlisted name.
 
 ## Known audit findings (transitive, not direct)
 
-Recorded at the gate, not fixed by the builder alone. See the Prompt 0 gate report.
+Accepted by the owner at the Prompt 0 gate (D-25): counts, advisories, why each is build-time
+only, and the rule for future gates are in [SECURITY.md §5.1](SECURITY.md#51-accepted-risks-d-25).

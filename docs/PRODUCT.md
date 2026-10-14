@@ -39,4 +39,8 @@ Decisions are the owner's. The builder cites them by number and never changes th
 | D-20 | GitHub private repo, free tier; Expo/EAS free tier; no licence file; package marked private and UNLICENSED. |
 | D-21 | Dependency licence allowlist (see [SECURITY.md](SECURITY.md#dependencies)) applies to production dependencies only; failing packages are listed in DEPENDENCIES.md and raised at the gate; the builder never widens the allowlist. |
 | D-22 | Commit-msg hook enforces the subject line only; body and trailers are free. |
-| D-23 | Reserved by the owner's register; not yet communicated to the builder. |
+| D-23 | Apple Developer Program already held; no new open item (see D-15). |
+| D-24 | Licence exceptions: per-package exceptions for the 14 packages raised at the Prompt 0 gate (lightningcss and its 12 platform binaries, MPL-2.0; caniuse-lite, CC-BY-4.0; argparse, Python-2.0), each keyed on package name and exact licence string so a licence change fails the check again; allowlist unchanged; reason "build tooling/data, not shipped in app bundle" ([DEPENDENCIES.md](DEPENDENCIES.md#licence-check-exceptions)). |
+| D-25 | npm audit findings accepted for now: no overrides, no audit job in CI; counts reported at every gate; any high finding in code that ships in the app bundle is a blocker ([SECURITY.md](SECURITY.md#51-accepted-risks-d-25)). |
+| D-26 | Google Maps Platform non-EEA terms apply; the billing address will be in the UK. Depends on OI-2's billing address being in the UK ([SECURITY.md](SECURITY.md#4-google-maps-platform-terms-obligations)). |
+| D-27 | Stray home repository at `C:\Users\joshu` (OI-11): no action by Claude Code; the owner may delete its `.git`. |

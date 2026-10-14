@@ -68,9 +68,10 @@ Source: Google Maps Platform Service Specific Terms,
 lists its current version as last modified **June 10, 2026** (shown as "Previous versions (Last
 modified June 10, 2026)"). These are the non-EEA terms; the page states that an EEA billing
 address falls under separate EEA terms at
-<https://cloud.google.com/terms/maps-platform/eea/maps-service-terms>. The owner's billing
-address decides which applies (OI-2); the clauses quoted below should be re-checked against the
-EEA version if that is the case.
+<https://cloud.google.com/terms/maps-platform/eea/maps-service-terms>. **Owner's ruling (D-26,
+2026-10-14): the billing address will be in the UK, so the non-EEA terms quoted below apply.**
+This depends on OI-2's billing address being in the UK; if it ever is not, the clauses quoted
+below must be re-checked against the EEA version.
 
 ### 4.1 Caching
 
