@@ -19,9 +19,29 @@ const ALLOWED = new Set([
   'BlueOak-1.0.0',
 ]);
 
-// Owner-approved per-package exceptions: name -> reason. Empty until the owner rules
-// (docs/DEPENDENCIES.md, "Licence check exceptions"). The builder never adds to this alone.
-const EXCEPTIONS = new Map([]);
+// Owner-approved per-package exceptions (D-24, 2026-10-14): name -> the exact licence string
+// the exception was granted for. Keyed on BOTH, so a licence change on any of these packages
+// fails the check again. Reasons are in docs/DEPENDENCIES.md, "Licence check exceptions".
+// The builder never adds to this alone.
+const LIGHTNINGCSS_PLATFORMS = [
+  'android-arm64',
+  'darwin-arm64',
+  'darwin-x64',
+  'freebsd-x64',
+  'linux-arm-gnueabihf',
+  'linux-arm64-gnu',
+  'linux-arm64-musl',
+  'linux-x64-gnu',
+  'linux-x64-musl',
+  'win32-arm64-msvc',
+  'win32-x64-msvc',
+];
+const EXCEPTIONS = new Map([
+  ['lightningcss', 'MPL-2.0'],
+  ...LIGHTNINGCSS_PLATFORMS.map((p) => [`lightningcss-${p}`, 'MPL-2.0']),
+  ['caniuse-lite', 'CC-BY-4.0'],
+  ['argparse', 'Python-2.0'],
+]);
 
 function licenceAllowed(expr) {
   if (typeof expr !== 'string' || expr.trim() === '') return false;
@@ -44,7 +64,8 @@ for (const [path, entry] of Object.entries(lock.packages)) {
   checked += 1;
   const name = path.slice(path.lastIndexOf('node_modules/') + 'node_modules/'.length);
   const licence = entry.license ?? '(none recorded)';
-  if (EXCEPTIONS.has(name)) continue;
+  // An exception holds only while the package still carries the exact licence it was granted for.
+  if (EXCEPTIONS.get(name) === entry.license) continue;
   if (!licenceAllowed(entry.license)) failures.push({ name, version: entry.version, licence });
 }
 

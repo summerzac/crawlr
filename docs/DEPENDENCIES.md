@@ -31,22 +31,33 @@ Licence policy and allowlist: [SECURITY.md](SECURITY.md#5-dependencies).
 
 ## Licence check exceptions
 
-Granted exceptions: none. The `EXCEPTIONS` map in `scripts/check-licenses.mjs` is empty.
+**Granted by the owner at the Prompt 0 gate (D-24, 2026-10-14):** per-package exceptions for the
+14 packages below, in the `EXCEPTIONS` map of `scripts/check-licenses.mjs`. The allowlist is
+unchanged. Each exception is keyed on the package name **and** the exact licence string, so a
+licence change on any of them fails the check again. All arrive as transitive dependencies of
+`expo` (Expo CLI, Metro, browserslist, js-yaml); none is Crawlr's own code.
 
-**Pending the owner's ruling (raised at the Prompt 0 gate).** `npm run licences` fails on these
-transitive packages in the production tree. All arrive through `expo` (build tooling: Expo CLI,
-Metro, browserslist, js-yaml); none is Crawlr's own code and none ships in the app bundle.
-
-| Package | Version | Licence | Reached via | Note |
+| Package | Version | Licence | Reached via | Reason |
 |---|---|---|---|---|
-| lightningcss (+ 12 platform binaries `lightningcss-*`) | 1.33.0 | MPL-2.0 | expo → @expo/cli / Metro CSS tooling | MPL-2.0 is a weak copyleft on the library's own files only; unmodified use does not affect Crawlr's licence |
-| caniuse-lite | 1.0.30001816 | CC-BY-4.0 | expo → browserslist | Data file (browser support table); CC-BY requires attribution of the data, not of Crawlr |
-| argparse | 2.0.1 | Python-2.0 | expo → js-yaml | Permissive licence under a non-allowlisted name |
+| lightningcss | 1.33.0 | MPL-2.0 | expo → @expo/cli / Metro CSS tooling | build tooling/data, not shipped in app bundle |
+| lightningcss-android-arm64 | 1.33.0 | MPL-2.0 | lightningcss (platform binary) | build tooling/data, not shipped in app bundle |
+| lightningcss-darwin-arm64 | 1.33.0 | MPL-2.0 | lightningcss (platform binary) | build tooling/data, not shipped in app bundle |
+| lightningcss-darwin-x64 | 1.33.0 | MPL-2.0 | lightningcss (platform binary) | build tooling/data, not shipped in app bundle |
+| lightningcss-freebsd-x64 | 1.33.0 | MPL-2.0 | lightningcss (platform binary) | build tooling/data, not shipped in app bundle |
+| lightningcss-linux-arm-gnueabihf | 1.33.0 | MPL-2.0 | lightningcss (platform binary) | build tooling/data, not shipped in app bundle |
+| lightningcss-linux-arm64-gnu | 1.33.0 | MPL-2.0 | lightningcss (platform binary) | build tooling/data, not shipped in app bundle |
+| lightningcss-linux-arm64-musl | 1.33.0 | MPL-2.0 | lightningcss (platform binary) | build tooling/data, not shipped in app bundle |
+| lightningcss-linux-x64-gnu | 1.33.0 | MPL-2.0 | lightningcss (platform binary) | build tooling/data, not shipped in app bundle |
+| lightningcss-linux-x64-musl | 1.33.0 | MPL-2.0 | lightningcss (platform binary) | build tooling/data, not shipped in app bundle |
+| lightningcss-win32-arm64-msvc | 1.33.0 | MPL-2.0 | lightningcss (platform binary) | build tooling/data, not shipped in app bundle |
+| lightningcss-win32-x64-msvc | 1.33.0 | MPL-2.0 | lightningcss (platform binary) | build tooling/data, not shipped in app bundle |
+| caniuse-lite | 1.0.30001816 | CC-BY-4.0 | expo → browserslist | build tooling/data, not shipped in app bundle |
+| argparse | 2.0.1 | Python-2.0 | expo → js-yaml | build tooling/data, not shipped in app bundle |
 
-Options for the owner: (a) add `MPL-2.0`, `CC-BY-4.0` and `Python-2.0` to the allowlist in
-SECURITY.md and the script; (b) grant per-package exceptions in `EXCEPTIONS`; (c) leave CI red
-on the licence check until Expo's tree changes. Builder's recommendation: (b), per package, so
-the allowlist stays narrow.
+Notes kept from the gate: MPL-2.0 is a weak copyleft on the library's own files only, and
+unmodified use does not affect Crawlr's licence; caniuse-lite is a data file whose CC-BY
+attribution applies to the data, not to Crawlr; argparse's Python-2.0 is permissive under a
+non-allowlisted name.
 
 ## Known audit findings (transitive, not direct)
 
